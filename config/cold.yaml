@@ -1,0 +1,51 @@
+id: TEMPERATUREPROFILE_COLD
+name: Cold
+thresholds:
+- color:
+    r: 128
+    g: 254
+    b: 240
+    a: 191
+  temperature: 0
+- color:
+    r: 43
+    g: 203
+    b: 255
+    a: 191
+  temperature: 90
+- color:
+    r: 31
+    g: 161
+    b: 255
+    a: 191
+  temperature: 152
+- color:
+    r: 59
+    g: 254
+    b: 74
+    a: 191
+  temperature: 216
+- color:
+    r: 239
+    g: 255
+    b: 0
+    a: 191
+  temperature: 232
+- color:
+    r: 255
+    g: 169
+    b: 36
+    a: 191
+  temperature: 252
+- color:
+    r: 251
+    g: 83
+    b: 80
+    a: 191
+  temperature: 273
+- color:
+    r: 251
+    g: 2
+    b: 0
+    a: 191
+  temperature: 283
