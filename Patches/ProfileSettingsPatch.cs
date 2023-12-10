@@ -1,10 +1,8 @@
 ﻿using System.Diagnostics;
-using System.IO;
 using System.Reflection;
 using HarmonyLib;
 using PeterHan.PLib.Core;
 using PeterHan.PLib.UI;
-using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -18,9 +16,6 @@ namespace TemperatureThresholds.Patches
 		[HarmonyPatch("OnSpawn")]
 		public static class AddProfilesButton
 		{
-			//static AccessTools.FieldRef<UnitConfigurationScreen, GameObject> toggleGroupRef =
-			//	AccessTools.FieldRefAccess<UnitConfigurationScreen, GameObject>("toggleGroup");
-
 			public static void Prefix(GameOptionsScreen __instance)
 			{
 				var content = __instance.GetComponent<Transform>().Find("Content");
@@ -65,19 +60,12 @@ namespace TemperatureThresholds.Patches
 				labelStyle.enableWordWrapping = true;
 				labelStyle.fontSize = 24;
 				
-				PLabel temperaturesLabel = new PLabel("TemperatureThresholdsLabel")
-				{
-					Text = "Temperatures: ",
-					TextStyle = PUITuning.Fonts.TextLightStyle,
-					TextAlignment = TextAnchor.LowerLeft,
-				};
 				PPanel buttonPanel = new PPanel("TemperatureThresholdsButtonPanel")
 				{
 					Margin = new RectOffset(0, 0, 16, 0),
 					FlexSize = Vector2.left,
 					Direction = PanelDirection.Horizontal
 				};
-				buttonPanel.AddChild(temperaturesLabel);
 				buttonPanel.AddChild(btn);
 				
 				PLabel header = new PLabel("TemperatureThresholdsHeader")
