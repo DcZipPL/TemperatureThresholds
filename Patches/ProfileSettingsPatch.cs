@@ -47,13 +47,14 @@ namespace TemperatureThresholds.Patches
 				PUtil.LogDebug("Injecting button into settings.");
 				var btn = new PButton
 				{
-					Text = "Open Overlay Profiles",
+					Text = "Open Temperature Profiles",
 					OnClick = sender =>
 					{
 						PUtil.LogDebug("Tried to open mod directory!");
 						Process.Start(ModSettings.GetConfigPath());
 					},
-					ToolTip = "Opens TemperatureThresholds config directory"
+					ToolTip = "Opens TemperatureThresholds config directory",
+					Margin = new RectOffset(10,10,10,10)
 				};
 				btn.SetKleiBlueStyle();
 
@@ -64,35 +65,40 @@ namespace TemperatureThresholds.Patches
 				labelStyle.enableWordWrapping = true;
 				labelStyle.fontSize = 24;
 				
-				PLabel label = new PLabel("TemperatureThresholdsLabel")
+				PLabel temperaturesLabel = new PLabel("TemperatureThresholdsLabel")
+				{
+					Text = "Temperatures: ",
+					TextStyle = PUITuning.Fonts.TextLightStyle,
+					TextAlignment = TextAnchor.LowerLeft,
+				};
+				PPanel buttonPanel = new PPanel("TemperatureThresholdsButtonPanel")
+				{
+					Margin = new RectOffset(0, 0, 16, 0),
+					FlexSize = Vector2.left,
+					Direction = PanelDirection.Horizontal
+				};
+				buttonPanel.AddChild(temperaturesLabel);
+				buttonPanel.AddChild(btn);
+				
+				PLabel header = new PLabel("TemperatureThresholdsHeader")
 				{
 					Text = "Overlay",
 					TextStyle = labelStyle,
 					TextAlignment = TextAnchor.LowerLeft,
 				};
-				var labelTransform = label.Build().GetComponent<RectTransform>();
 				
-				PPanel labelPanel = new PPanel("TemperatureThresholdsLabelPanel")
-				{
-					Direction = PanelDirection.Horizontal,
-					Spacing = 0,
-					Alignment = TextAnchor.LowerLeft
-				};
-				labelPanel.AddChild(label);
-				
-				PGridPanel panel = new PGridPanel("TemperatureThresholdsPanel")
+				PPanel panel = new PPanel("TemperatureThresholdsPanel")
 				{
 					Margin = new RectOffset(12, 12, 12, 12),
 					FlexSize = Vector2.left,
 					BackColor = new Color(0.188f, 0.204f, 0.263f, 1.0f),
 					BackImage = sprite,
 					ImageMode = Image.Type.Sliced,
+					Alignment = TextAnchor.MiddleLeft,
+					Direction = PanelDirection.Vertical
 				};
-				panel.AddRow(new GridRowSpec());
-				panel.AddRow(new GridRowSpec());
-				panel.AddColumn(new GridColumnSpec());
-				panel.AddChild(labelPanel, new GridComponentSpec(0, 0));
-				panel.AddChild(btn, new GridComponentSpec(1, 0));
+				panel.AddChild(header);
+				panel.AddChild(buttonPanel);
 				
 				GameObject go = panel.AddTo(content.gameObject);
 				go.transform.SetSiblingIndex(2);
