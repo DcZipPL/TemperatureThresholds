@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using PeterHan.PLib.Core;
-using PeterHan.PLib.UI;
 using UnityEngine;
 using YamlDotNet.Serialization;
 using YamlDotNet.Serialization.NamingConventions;
@@ -46,11 +45,11 @@ namespace TemperatureThresholds
             try
             {
                 var path = ModSettings.GetConfigPath();
-                PUtil.LogDebug("Default config directory: " + path);
+                PUtil.LogDebug($"Default config directory: {path}");
                 
                 if (!Directory.Exists(path))
                 {
-                    PUtil.LogDebug("Creating config directory: " + path);
+                    PUtil.LogDebug($"Creating config directory: {path}");
                     Directory.CreateDirectory(path);
                 }
                 
@@ -66,11 +65,11 @@ namespace TemperatureThresholds
                                 .Build();
 
                             this.profiles.Add(deserializer.Deserialize<TemperatureProfile>(yml));
-                            PUtil.LogDebug("Loaded: "+ deserializer.Deserialize<TemperatureProfile>(yml).name);
+                            PUtil.LogDebug($"Loaded: {deserializer.Deserialize<TemperatureProfile>(yml).name}");
                         }
                         catch (Exception ex)
                         {
-                            PUtil.LogWarning("Could not load " + filePath + ":\n" + ex);
+                            PUtil.LogWarning($"Could not load {filePath}:\n{ex}");
                             erroredProfiles.Add(Path.GetFileNameWithoutExtension(filePath));
                         }
                     }
@@ -78,7 +77,7 @@ namespace TemperatureThresholds
             }
             catch (Exception ex)
             {
-                PUtil.LogError("Temperature Profile error:\n===============\n" + ex);
+                PUtil.LogError($"Temperature Profile error:\n===============\n{ex}\n===============\n");
                 return false;
             }
             return true;

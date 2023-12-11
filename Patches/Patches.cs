@@ -34,7 +34,7 @@ namespace TemperatureThresholds.Patches
         {
             public static void Postfix(ref Dictionary<string, ToolParameterMenu.ToggleState> __result)
             {
-	            PUtil.LogDebug("Adding filters (0/"+ Instance.profiles.Count + ")...");
+	            PUtil.LogDebug($"Adding filters (0/{Instance.profiles.Count})...");
 				OrderedDictionary od = new OrderedDictionary();
                 foreach (var pair in __result)
                 {
@@ -67,6 +67,24 @@ namespace TemperatureThresholds.Patches
 	                ModSettings.Instance.currentProfile = null;
                 }
             }
+        }
+        
+        [HarmonyPatch(typeof(OverlayModes.Temperature))]
+        [HarmonyPatch("Enable")]
+        public class FixOverlayEnableCrash
+        {
+	        public static bool Prefix(OverlayModes.Temperature __instance)
+	        {
+		        /*PUtil.LogDebug($"Debug: {SimDebugView.Instance.temperatureThresholds.Length} {__instance.temperatureLegend.Count}");
+		        int num = SimDebugView.Instance.temperatureThresholds.Length - 1;
+		        for (int index = 0; index < __instance.temperatureLegend.Count; ++index)
+		        {
+			        __instance.temperatureLegend[index].colour = (Color) GlobalAssets.Instance.colorSet.GetColorByName(SimDebugView.Instance.temperatureThresholds[num - index].colorName);
+			        __instance.temperatureLegend[index].desc_arg = GameUtil.GetFormattedTemperature(SimDebugView.Instance.temperatureThresholds[num - index].value);
+		        }*/
+		        // Disable this part of code. I have no idea what it does, but it crashes the game.
+		        return false;
+	        }
         }
 
 		[HarmonyPatch(typeof(OverlayModes.Temperature))]
