@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using PeterHan.PLib.Core;
+using PeterHan.PLib.UI;
 using UnityEngine;
 using YamlDotNet.Serialization;
 using YamlDotNet.Serialization.NamingConventions;
@@ -13,6 +14,7 @@ namespace TemperatureThresholds
         public static TemperatureProfiles Instance = new TemperatureProfiles();
 
         public List<TemperatureProfile> profiles = new List<TemperatureProfile>();
+        public List<string> erroredProfiles = new List<string>();
 
         public class PColor
         {
@@ -43,7 +45,7 @@ namespace TemperatureThresholds
         {
             try
             {
-                var path = Path.Combine(KMod.Manager.GetDirectory(), "config", "TemperatureThresholds");
+                var path = ModSettings.GetConfigPath();
                 PUtil.LogDebug("Default config directory: " + path);
                 
                 if (!Directory.Exists(path))
@@ -56,13 +58,21 @@ namespace TemperatureThresholds
                 {
                     if (Path.GetExtension(filePath) == ".yaml" || Path.GetExtension(filePath) == ".yml")
                     {
-                        string yml = File.ReadAllText(filePath);
-                        var deserializer = new DeserializerBuilder()
-                            .WithNamingConvention(new CamelCaseNamingConvention())
-                            .Build();
+                        try
+                        {
+                            string yml = File.ReadAllText(filePath);
+                            var deserializer = new DeserializerBuilder()
+                                .WithNamingConvention(new CamelCaseNamingConvention())
+                                .Build();
 
-                        this.profiles.Add(deserializer.Deserialize<TemperatureProfile>(yml));
-                        PUtil.LogDebug("Loaded: "+ deserializer.Deserialize<TemperatureProfile>(yml).name);
+                            this.profiles.Add(deserializer.Deserialize<TemperatureProfile>(yml));
+                            PUtil.LogDebug("Loaded: "+ deserializer.Deserialize<TemperatureProfile>(yml).name);
+                        }
+                        catch (Exception ex)
+                        {
+                            PUtil.LogWarning("Could not load " + filePath + ":\n" + ex);
+                            erroredProfiles.Add(Path.GetFileNameWithoutExtension(filePath));
+                        }
                     }
                 }
             }

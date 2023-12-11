@@ -75,7 +75,7 @@
   <ItemGroup>
     <Compile Include="ModLoad.cs" />
     <Compile Include="ModSettings.cs" />
-    <Compile Include="Patches\MigrationDialogPatch.cs" />
+    <Compile Include="Patches\StartupDialogsPatch.cs" />
     <Compile Include="Patches\Patches.cs" />
     <Compile Include="Patches\ProfileSettingsPatch.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -91,68 +91,7 @@ namespace TemperatureThresholds.Patches
 				GameObject go = panel.AddTo(content.gameObject);
 				go.transform.SetSiblingIndex(2);
 				go.SetActive(true);
-				
-				printTreeOfChildren(content);
-				printTreeOfChildren(go.transform);
 			}
-		}
-		
-		public static Transform printTreeOfChildren(Transform transform, int depth = 0)
-		{
-			string indent = "";
-			for (int i = 0; i < depth; i++)
-			{
-				indent += "  ";
-			}
-			PUtil.LogDebug(indent + transform.gameObject.name);
-			
-			// Get component names of SaveOptions and values
-			Component[] components = transform.gameObject.GetComponents<Component>();
-			foreach (Component component in components)
-			{
-				string componentName = component.GetType().Name;
-				PUtil.LogDebug(indent + "& " + componentName);
-			
-				FieldInfo[] fields = component.GetType().GetFields();
-				PropertyInfo[] properties = component.GetType().GetProperties();
-
-				foreach (FieldInfo field in fields)
-				{
-					object value = field.GetValue(component);
-					PUtil.LogDebug(indent + "&F> " + "Name: " + field.Name + ", Value: " + value);
-				}
-
-				try
-				{
-					foreach (PropertyInfo property in properties)
-					{
-						/*if (property.Name == "sprite")
-						{
-							Sprite sprite = property.GetValue(component) as Sprite;
-							var texture = sprite.texture;
-							PUtil.LogDebug(indent + "! Texture: \n" + texture.name + "\n" + texture.width + "x" + texture.height);
-							break;
-						}*/
-						try
-						{
-							object value = property.GetValue(component);
-							PUtil.LogDebug(indent + "&P> " + "Name: " + property.Name + ", Value: " + value);
-						} catch (System.Exception e)
-						{
-							PUtil.LogDebug(indent + "&P1> " + "Exception: " + e.Message);
-						}
-					}
-				} catch (System.Exception e)
-				{
-					PUtil.LogDebug(indent + "&P0> " + "Exception: " + e.Message);
-				}
-			}
-			
-			foreach (Transform child in transform)
-			{
-				printTreeOfChildren(child, depth + 1);
-			}
-			return transform;
 		}
 	}
 }
