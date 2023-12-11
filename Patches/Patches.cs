@@ -75,6 +75,7 @@ namespace TemperatureThresholds.Patches
         {
 	        public static bool Prefix(OverlayModes.Temperature __instance)
 	        {
+		        PUtil.LogDebug($"OverlayModes.Temperature.Enable() called. This part of code is disabled. If you have issues with this part of code, please report it on GitHub.");
 		        /*PUtil.LogDebug($"Debug: {SimDebugView.Instance.temperatureThresholds.Length} {__instance.temperatureLegend.Count}");
 		        int num = SimDebugView.Instance.temperatureThresholds.Length - 1;
 		        for (int index = 0; index < __instance.temperatureLegend.Count; ++index)

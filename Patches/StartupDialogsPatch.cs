@@ -21,30 +21,33 @@ namespace TemperatureThresholds.Patches
 
 		private static void ShowProfileErrorsPopup()
 		{
-			var errorDialog = new PDialog("ProfileLoadError")
+			if (TemperatureProfiles.Instance.erroredProfiles.Count > 0)
 			{
-				Title = "Temperature Thresholds"
-			};
-			errorDialog.Body.Margin = new UnityEngine.RectOffset(20, 20, 20, 20);
-			errorDialog.Body.AddChild(new PLabel("ProfileLoadErrorLabel")
-			{
-				Text = "Could not load profiles:",
-				TextStyle = PUITuning.Fonts.TextLightStyle
-			});
-			foreach (var errored in TemperatureProfiles.Instance.erroredProfiles)
-			{
-				errorDialog.Body.AddChild(new PLabel("ProfileLoadErrorLabelOf"+errored)
+				var errorDialog = new PDialog("ProfileLoadError")
 				{
-					Text = errored,
+					Title = "Temperature Thresholds"
+				};
+				errorDialog.Body.Margin = new UnityEngine.RectOffset(20, 20, 20, 20);
+				errorDialog.Body.AddChild(new PLabel("ProfileLoadErrorLabel")
+				{
+					Text = "Could not load profiles:",
 					TextStyle = PUITuning.Fonts.TextLightStyle
 				});
+				foreach (var errored in TemperatureProfiles.Instance.erroredProfiles)
+				{
+					errorDialog.Body.AddChild(new PLabel("ProfileLoadErrorLabelOf"+errored)
+					{
+						Text = errored,
+						TextStyle = PUITuning.Fonts.TextLightStyle
+					});
+				}
+				errorDialog.Body.AddChild(new PLabel("ProfileLoadErrorLabelEnd")
+				{
+					Text = "\nCheck player.log for more details.",
+					TextStyle = PUITuning.Fonts.TextLightStyle
+				});
+				errorDialog.Show();
 			}
-			errorDialog.Body.AddChild(new PLabel("ProfileLoadErrorLabelEnd")
-			{
-				Text = "\nCheck player.log for more details.",
-				TextStyle = PUITuning.Fonts.TextLightStyle
-			});
-			errorDialog.Show();
 		}
 		
 		private static void ShowMigrationPopup()
