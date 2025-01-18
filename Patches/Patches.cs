@@ -166,7 +166,7 @@ namespace TemperatureThresholds.Patches
 		[HarmonyPatch("NormalizedTemperature")]
 		public class SimDebugView_NormalizedTemperature_Patch
 		{
-			public static void Postfix(SimDebugView __instance, float temperature, ref Color __result)
+			public static void Postfix(SimDebugView __instance, float actualTemperature, ref Color __result)
 			{
 				if (ModSettings.Instance.currentProfile != null)
 				{
@@ -178,7 +178,7 @@ namespace TemperatureThresholds.Patches
 					int index2 = 0;
 					for (int index3 = 0; index3 < ModSettings.Instance.currentProfile?.thresholds.Length; ++index3)
 					{
-						if ((double)temperature <= (double)thresholds[index3].temperature)
+						if ((double)actualTemperature <= (double)thresholds[index3].temperature)
 						{
 							index2 = index3;
 							break;
@@ -188,7 +188,7 @@ namespace TemperatureThresholds.Patches
 					}
 					float a = 0.0f;
 					if (index1 != index2)
-						a = (float)(((double)temperature - (double)thresholds[index1].temperature) / ((double)thresholds[index2].temperature - (double)thresholds[index1].temperature));
+						a = (float)(((double)actualTemperature - (double)thresholds[index1].temperature) / ((double)thresholds[index2].temperature - (double)thresholds[index1].temperature));
 					float t = Mathf.Min(Mathf.Max(a, 0.0f), 1f);
 					__result = Color.Lerp((Color)thresholds[index1].color, (Color)thresholds[index2].color, t);
 				}
@@ -198,7 +198,7 @@ namespace TemperatureThresholds.Patches
 					int index2 = 0;
 					for (int index3 = 0; index3 < __instance.temperatureThresholds.Length; ++index3)
 					{
-						if ((double)temperature <= (double)__instance.temperatureThresholds[index3].value)
+						if ((double)actualTemperature <= (double)__instance.temperatureThresholds[index3].value)
 						{
 							index2 = index3;
 							break;
@@ -208,7 +208,7 @@ namespace TemperatureThresholds.Patches
 					}
 					float a = 0.0f;
 					if (index1 != index2)
-						a = (float)(((double)temperature - (double)__instance.temperatureThresholds[index1].value) / ((double)__instance.temperatureThresholds[index2].value - (double)__instance.temperatureThresholds[index1].value));
+						a = (float)(((double)actualTemperature - (double)__instance.temperatureThresholds[index1].value) / ((double)__instance.temperatureThresholds[index2].value - (double)__instance.temperatureThresholds[index1].value));
 					float t = Mathf.Min(Mathf.Max(a, 0.0f), 1f);
 					__result = Color.Lerp((Color)GlobalAssets.Instance.colorSet.GetColorByName(__instance.temperatureThresholds[index1].colorName), (Color)GlobalAssets.Instance.colorSet.GetColorByName(__instance.temperatureThresholds[index2].colorName), t);
 				}
